@@ -32,13 +32,15 @@ void setup()
     TCCR1B = 0;    // set TCCR1B register to 0 
 
 	// turn on CTC mode:
-	TCCR1B |= (1 << WGM12);
+	TCCR1B |= (1 << WGM02);
 	
     // Set CS12 bit so timer runs at clock speed: (pre-scale of 256)
     TCCR1B |= (1 << CS12); // Sets bit CS12 in TCCR1B
 	
     // set compare match register to desired timer count:
-    OCR1A = 0x124F;
+    OCR1A = 0x1F89;
+	//set TOP
+	OCR0A = 0x28B0; //TOP
         
 	// enable timer compare interrupt:
 	TIMSK1 |= (1 << OCIE1A);
@@ -50,7 +52,7 @@ void setup()
 ISR(TIMER1_COMPA_vect)
 {
     if((PORTB & LED) == 0) {
-		//PORTB |= LED;
+		PORTB |= LED;
 		// This is the compare/match value when the LED is on
 		OCR1A = 0x124F; // reload the timer pre-load
 	} else {
